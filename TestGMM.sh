@@ -11,9 +11,6 @@ echo Script: $0
 source Config.sh
 chdir.sh $*
 
-# Variables for the main script
-export DECODE_DICT=$MAIN_DICT
-
 # This is the acoustic model to use
 acousticModel=../plp
 export DECODE_MODEL_DIR=$acousticModel/hmm-eval
@@ -22,6 +19,7 @@ export DECODE_MODEL_DIR=$acousticModel/hmm-eval
 export DECODER=HDecode
 case $DECODER in
 'HVite')
+    export DECODE_DICT=$MAIN_DICT
     export DECODE_NETWORK=../iss-wsj/wsj5k/network.txt
     export DECODE_LM_SCALE=16.0
     export DECODE_WORD_PENALTY=-10.0
@@ -31,7 +29,6 @@ case $DECODER in
     export HDECODE=/idiap/resource/software/HTK/HTK_V3.4.1/bin/HDecode
     export NET_LM=../iss-wsj/local/bcb05cnp-arpa.txt
     export NET_WORDS=../iss-wsj/local/wlist5c-nvp.txt
-    export DECODE_DICT=../iss-wsj/wsj5k/rec-dict.txt
     export DECODE_LM_SCALE=16.0
     export DECODE_WORD_PENALTY=-10.0
     export PRUNE="250.0 250.0"
