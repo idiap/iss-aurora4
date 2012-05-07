@@ -13,22 +13,21 @@ chdir.sh $*
 
 # This is the acoustic model to use
 acousticModel=../plp
-export DECODE_MODEL_DIR=$acousticModel/hmm-eval
+languageModel=../iss-wsj/wsj5k
+export DECODE_ACOUSTIC_MODEL_DIR=$acousticModel/hmm-eval
+export DECODE_LANGUAGE_MODEL_DIR=$languageModel/htk-lm
 
 # The other things depend on which decoder is used
 export DECODER=HDecode
 case $DECODER in
 'HVite')
-    export DECODE_DICT=$MAIN_DICT
-    export DECODE_NETWORK=../iss-wsj/wsj5k/network.txt
     export DECODE_LM_SCALE=16.0
     export DECODE_WORD_PENALTY=-10.0
     export PRUNE="300 300 5000"
     ;;
 'HDecode')
+    # HDecode should be a 32 bit version, so override it.
     export HDECODE=/idiap/resource/software/HTK/HTK_V3.4.1/bin/HDecode
-    export NET_LM=../iss-wsj/local/bcb05cnp-arpa.txt
-    export NET_WORDS=../iss-wsj/local/wlist5c-nvp.txt
     export DECODE_LM_SCALE=16.0
     export DECODE_WORD_PENALTY=-10.0
     export PRUNE="250.0 250.0"
@@ -36,7 +35,7 @@ case $DECODER in
     ;;
 'Juicer')
     export FEAT_NAME=PLP_0_D_A_Z
-    export WFST_LG_DIR=../iss-wsj/wsj5k/wfst-lg
+    export WFST_LG_DIR=$languageModel/wfst-lg
     export WFST_CLG_DIR=$acousticModel/wfst-clg-wsj5k
     export Tracter_Verbose=1
     export DECODE_BEAM="400.0 400.0 400.0"
